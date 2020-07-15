@@ -1,0 +1,17 @@
+steps:
+  - id: "deploy function"
+    name: gcr.io/cloud-builders/gcloud
+    args:
+      - functions
+      - deploy
+      - ${_FUNCTION_NAME}
+      - --runtime=python37
+      - --entry-point=entry_point
+      - --trigger-topic=cloud-builds
+      - --region=${_FUNCTION_REGION}
+      - --set-env-vars=_CLOUD_BUILD_BADGE_BUCKET=${_BUCKET_NAME}
+
+substitutions:
+  _FUNCTION_NAME: cloud-build-badge
+  _FUNCTION_REGION: us-central1
+  _BUCKET_NAME: ${PROJECT_ID}-cloud-build-badge

@@ -1,0 +1,27 @@
+# Not required for application.
+cloudbuild.yaml
+LICENSE
+README.md
+requirements-dev.txt
+
+# gcloud.
+.gcloudignore
+
+# Git.
+.git/
+.gitignore
+
+# Python.
+__pycache__/
+*.pyc
+*.pyd
+*.pyo
+
+# mypy.
+/.mypy_cache/
+
+# Python virtual environment.
+/env/
+
+# Visual Studio Code.
+/.vscode/

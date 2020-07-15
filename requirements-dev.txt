@@ -1,0 +1,7 @@
+google-cloud-storage==1.*
+pybadges==2.*
+
+black
+mypy
+pycodestyle
+pylint
