@@ -7,7 +7,7 @@ GCSのバケットは予め作成し、 `_CLOUD_BUILD_BADGE_BUCKET` にバケッ
 
 """
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 import base64
 from collections import defaultdict
@@ -221,7 +221,7 @@ def export_badge_to_gcs(
     def upload(path: str) -> None:
         bucket = gcs_client.get_bucket(bucket_name)
         blob = bucket.blob(path)
-        blob.metadata = {"Cache-Control": "no-cache, max-age=0"}
+        blob.cache_control = "max-age=60, s-maxage=60"
         blob.upload_from_string(badge.to_svg(), content_type="image/svg+xml")
 
     def to_url(path: str) -> str:
