@@ -21,7 +21,7 @@
 リポジトリの接続やCloud Buildの設定は済んでいることが前提となっています。  
 未設定の場合は [公式ドキュメント](https://cloud.google.com/cloud-build/docs/automating-builds/create-manage-triggers) などを参考に設定してください。  
 
-なお、接続されるリポジトリはCloud Source RepositoriesおよびGitHubにて正常に動作することを確認しています。  
+なお、接続するリポジトリについてはCloud Source RepositoriesおよびGitHubにて正常に動作することを確認しています。  
 
 ## Setup
 
@@ -74,7 +74,7 @@ https://storage.googleapis.com/BUCKET/repositories/REPOSITORY/triggers/TRIGGER/b
 ### Customization
 設定でバッジの保存先のバケットを切り替えたり、バッジのラベル部分を変更できます。  
 Cloud Functionsの環境変数、もしくはCloud Buildのトリガの環境変数に値を設定してください。  
-両方に設定が存在する場合、Cloud Buildのトリガ側の設定値が優先されます。  
+設定が重複している場合、Cloud Buildのトリガ側の設定値が優先されます。  
 
 |Variable|Type|Required|Default|Description|
 |:--|:--|:-:|:--|:--|
