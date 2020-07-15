@@ -1,4 +1,7 @@
 # Cloud Build Badge
+[![build status](https://storage.googleapis.com/jkff-mv-laboratory-cloud-build-badge/triggers/7f7036fd-6d3e-470e-b57d-a3df19b16f5e/badge.svg)](https://github.com/jkff-mv/cloud-build-badge/blob/master/cloudbuild.yaml)
+[![language](https://img.shields.io/badge/language-python-blue)](https://www.python.org/)
+[![license](https://img.shields.io/badge/license-MIT%20License-lightgrey.svg)](https://github.com/jkff-mv/cloud-build-badge/blob/master/LICENSE)
 
 ## Overview
 [Cloud Build](https://cloud.google.com/cloud-build/) のステータスを表すバッジを生成するアプリケーションです。  
