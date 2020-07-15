@@ -3,7 +3,7 @@
 """Cloud Build Badge
 
 Cloud Buildの情報からバッジを生成し、GCSへ保存する。
-GCSのバケットは予め作成し、 `_CLOUD_BUILD_BADGE_BUCKET` にバケット名を設定しておくこと。
+GCSのバケットは予め作成し、環境変数 `_CLOUD_BUILD_BADGE_BUCKET` にバケット名を設定しておくこと。
 
 """
 
@@ -270,7 +270,7 @@ def get_config(key, msg, default=None):
         設定値取得のためのキー。
     msg : dict
         Pub/Subから受け取ったメッセージ。
-    default : str
+    default : str, optional
         設定値が存在しなかった際のデフォルト値。
 
     Returns
