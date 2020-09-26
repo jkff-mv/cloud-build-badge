@@ -89,13 +89,13 @@ def entry_point(event, context):
     """エントリポイント。"""
 
     try:
-        return execute(event, context)
+        return run(event, context)
     except Exception as e:
         logging.error(e)
         sys.exit(1)
 
 
-def execute(event, context):
+def run(event, context):
     """メイン処理。"""
 
     # Pub/Subのメッセージを取得する。
@@ -114,6 +114,14 @@ def execute(event, context):
     }:
         return
 
+    # 設定でバッジの生成が無効化されている場合は抜ける。
+    badge_generation_setting = get_config(
+        "_CLOUD_BUILD_BADGE_GENERATION", pubsub_msg_dict, default="enabled"
+    )
+    if badge_generation_setting == "disabled":
+        logging.info("The badge generation setting is disabled.")
+        return
+
     # ログを出力する。
     if not build.repository:
         logging.info("Unknown repository.")
@@ -129,11 +137,11 @@ def execute(event, context):
 
     # バッジを生成し、GCSへ保存する。
     badge = create_badge(pubsub_msg_dict)
-    exported_badges = export_badge_to_gcs(badge, bucket_name, build)
+    uploaded_badges = upload_badge_to_gcs(badge, bucket_name, build)
 
     # ログを出力する。
-    for url in exported_badges:
-        logging.info(f"Uploaded badge to '{url}'.")
+    for url in uploaded_badges:
+        logging.info(f"Uploaded the badge to '{url}'.")
 
 
 def parse_build_info(msg: dict) -> Build:
@@ -154,7 +162,7 @@ def parse_build_info(msg: dict) -> Build:
     status = msg["status"]
     trigger = msg["buildTriggerId"]
 
-    # ビルドの定義ファイル自体が壊れていた場合など、情報が取得できない場合がある。
+    # ビルドの定義ファイル自体が壊れていた場合など、情報が取得できないことがある。
     repository, branch = None, None
     if "substitutions" in msg:
         repository = msg["substitutions"].get("REPO_NAME")
@@ -197,7 +205,7 @@ def create_badge(msg: dict) -> Badge:
     )
 
 
-def export_badge_to_gcs(
+def upload_badge_to_gcs(
     badge: Badge, bucket_name: str, build: Build
 ) -> List[str]:
     """バッジをGCSに保存する。
@@ -231,17 +239,17 @@ def export_badge_to_gcs(
 
     gcs_client = storage.Client()
 
-    location = f"triggers/{build.trigger}/badge.svg"
-    upload(location)
-    uploaded.append(to_url(location))
+    path = f"triggers/{build.trigger}/badge.svg"
+    upload(path)
+    uploaded.append(to_url(path))
 
     if not build.repository or not build.branch:
         return uploaded
 
     branch = build.branch.replace("/", "_")  # スラッシュは使えないので置換する。
-    location = f"repositories/{build.repository}/triggers/{build.trigger}/branches/{branch}/badge.svg"
-    upload(location)
-    uploaded.append(to_url(location))
+    path = f"repositories/{build.repository}/triggers/{build.trigger}/branches/{branch}/badge.svg"
+    upload(path)
+    uploaded.append(to_url(path))
 
     return uploaded
 
@@ -275,7 +283,7 @@ def get_config(key, msg, default=None):
 
     Returns
     -------
-    str
+    str or None
         設定値（存在しない場合は `None` もしくは `default` に指定した値）。
 
     """
@@ -289,4 +297,4 @@ def get_config(key, msg, default=None):
     if not value:
         value = default
 
-    return value
+    return None if value is None else str(value)
