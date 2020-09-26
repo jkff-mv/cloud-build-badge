@@ -131,7 +131,7 @@ def run(event, context):
     # 保存先のGCSバケットが設定されていることを確認する。
     bucket_name = get_config("_CLOUD_BUILD_BADGE_BUCKET", pubsub_msg_dict)
     if not bucket_name:
-        RuntimeError(
+        raise RuntimeError(
             "Bucket name is not set. Set the value to the environment variable '_CLOUD_BUILD_BADGE_BUCKET'."
         )
 
