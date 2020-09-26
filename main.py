@@ -122,12 +122,6 @@ def run(event, context):
         logging.info("The badge generation setting is disabled.")
         return
 
-    # ログを出力する。
-    if not build.repository:
-        logging.info("Unknown repository.")
-    if not build.branch:
-        logging.info("Unknown branch.")
-
     # 保存先のGCSバケットが設定されていることを確認する。
     bucket_name = get_config("_CLOUD_BUILD_BADGE_BUCKET", pubsub_msg_dict)
     if not bucket_name:
@@ -135,11 +129,15 @@ def run(event, context):
             "Bucket name is not set. Set the value to the environment variable '_CLOUD_BUILD_BADGE_BUCKET'."
         )
 
+    if not build.repository:
+        logging.info("Unknown repository.")
+    if not build.branch:
+        logging.info("Unknown branch.")
+
     # バッジを生成し、GCSへ保存する。
     badge = create_badge(pubsub_msg_dict)
     uploaded_badges = upload_badge_to_gcs(badge, bucket_name, build)
 
-    # ログを出力する。
     for url in uploaded_badges:
         logging.info(f"Uploaded the badge to '{url}'.")
 
