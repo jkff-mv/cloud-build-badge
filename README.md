@@ -51,6 +51,9 @@ $ gcloud functions deploy ${FUNCTION_NAME} \
 
 ## Usage
 
+### Generate Badge
+Cloud Buildで実行される全てのビルドに対して自動でバッジが生成されます。  
+
 ### Badge Location
 Cloud Buildのトリガの起動イベントが「ブランチへのpush」で対象のブランチが1つしか設定されていない場合、もしくはトリガの起動イベントが「タグのpush」の場合はこちらを参照ください。  
 
