@@ -7,7 +7,7 @@ GCSのバケットは予め作成し、環境変数 `_CLOUD_BUILD_BADGE_BUCKET` 
 
 """
 
-__version__ = "0.1.2"
+__version__ = "0.2.0"
 
 import base64
 from collections import defaultdict
