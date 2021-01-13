@@ -1,5 +1,5 @@
 # Cloud Build Badge
-[![latest version](https://img.shields.io/badge/latest-0.2.0-blue)](https://github.com/jkff-mv/cloud-build-badge/releases)
+[![latest version](https://img.shields.io/badge/latest-0.3.0-blue)](https://github.com/jkff-mv/cloud-build-badge/releases)
 [![build status](https://storage.googleapis.com/jkff-mv-laboratory-cloud-build-badge/triggers/7f7036fd-6d3e-470e-b57d-a3df19b16f5e/badge.svg)](https://github.com/jkff-mv/cloud-build-badge/blob/master/cloudbuild.yaml)
 [![language](https://img.shields.io/badge/language-python-blue)](https://www.python.org/)
 [![license](https://img.shields.io/badge/license-MIT%20License-lightgrey)](https://github.com/jkff-mv/cloud-build-badge/blob/master/LICENSE)
