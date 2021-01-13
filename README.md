@@ -42,7 +42,7 @@ $ gsutil iam ch allUsers:objectViewer gs://${BUCKET_NAME}
 $ FUNCTION_NAME='any-function-name'
 $ BUCKET_NAME='your-bucket-name'
 $ gcloud functions deploy ${FUNCTION_NAME} \
-  --runtime python37 \
+  --runtime python38 \
   --entry-point entry_point \
   --trigger-topic cloud-builds \
   --region us-central1 \
