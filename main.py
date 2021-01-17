@@ -3,11 +3,11 @@
 """Cloud Build Badge
 
 Cloud Buildの情報からバッジを生成し、GCSへ保存する。
-GCSのバケットは予め作成し、環境変数 `_CLOUD_BUILD_BADGE_BUCKET` にバケット名を設定しておくこと。
+GCSのバケットは予め作成し、環境変数 ``_CLOUD_BUILD_BADGE_BUCKET`` にバケット名を設定しておくこと。
 
 """
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 import base64
 from collections import defaultdict
@@ -115,7 +115,7 @@ def run(event, context):
         return
 
     # 設定でバッジの生成が無効化されている場合は抜ける。
-    badge_generation_setting = get_config(
+    badge_generation_setting = get_setting(
         "_CLOUD_BUILD_BADGE_GENERATION", pubsub_msg_dict, default="enabled"
     )
     if badge_generation_setting == "disabled":
@@ -123,10 +123,11 @@ def run(event, context):
         return
 
     # 保存先のGCSバケットが設定されていることを確認する。
-    bucket_name = get_config("_CLOUD_BUILD_BADGE_BUCKET", pubsub_msg_dict)
+    bucket_name = get_setting("_CLOUD_BUILD_BADGE_BUCKET", pubsub_msg_dict)
     if not bucket_name:
         raise RuntimeError(
-            "Bucket name is not set. Set the value to the environment variable '_CLOUD_BUILD_BADGE_BUCKET'."
+            "Bucket name is not set. "
+            "Set the value to the environment variable '_CLOUD_BUILD_BADGE_BUCKET'."
         )
 
     if not build.repository:
@@ -167,7 +168,7 @@ def parse_build_info(msg: dict) -> Build:
         branch = msg["substitutions"].get("BRANCH_NAME")
 
     return Build(
-        status=status, trigger=trigger, repository=repository, branch=branch,
+        status=status, trigger=trigger, repository=repository, branch=branch
     )
 
 
@@ -187,8 +188,8 @@ def create_badge(msg: dict) -> Badge:
     """
 
     status = msg["status"]
-    label = get_config("_CLOUD_BUILD_BADGE_LABEL", msg, default="build")
-    logo = get_config("_CLOUD_BUILD_BADGE_LOGO", msg)
+    label = get_setting("_CLOUD_BUILD_BADGE_LABEL", msg, default="build")
+    logo = get_setting("_CLOUD_BUILD_BADGE_LOGO", msg)
 
     status_to_color = defaultdict(lambda: "#9f9f9f")
     status_to_color["WORKING"] = "#dfb317"
@@ -253,21 +254,21 @@ def upload_badge_to_gcs(
 
 
 @overload
-def get_config(key: str, msg: dict) -> Optional[str]:
+def get_setting(key: str, msg: dict) -> Optional[str]:
     ...
 
 
 @overload
-def get_config(key: str, msg: dict, default: None) -> Optional[str]:
+def get_setting(key: str, msg: dict, default: None) -> Optional[str]:
     ...
 
 
 @overload
-def get_config(key: str, msg: dict, default: str) -> str:
+def get_setting(key: str, msg: dict, default: str) -> str:
     ...
 
 
-def get_config(key, msg, default=None):
+def get_setting(key, msg, default=None):
     """設定値を取得する。
 
     Parameters
